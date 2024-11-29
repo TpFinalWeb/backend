@@ -1,12 +1,10 @@
 import express from 'express';
 import { config } from './config/config';
 import connectToDb from './utils/mongodb';
+import app from './app';
 
-
-const app = express();
 const port = config.port!;
 
-app.use(express.json());
 
 // Démarrer le serveur
 app.listen(port, () => {
