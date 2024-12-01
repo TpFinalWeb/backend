@@ -58,6 +58,6 @@ export class UserController {
 
 
     public static isContainingNullOrUndefined(listOfItems: any[]): boolean {
-        return listOfItems.includes(null) || listOfItems.includes(undefined);
+        return listOfItems.includes(null) || listOfItems.includes(undefined) || listOfItems.includes("");
     }
 }
