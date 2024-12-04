@@ -1,7 +1,7 @@
 import fs from "fs";
-import { Game } from '../model/game';
-import { GameI } from '../interface/gameInterface';
-import { PriceI } from '../interface/priceInterface';
+import { Game } from '../models/game';
+import { GameI } from '../interfaces/gameInterface';
+import { PriceI } from '../interfaces/priceInterface';
 const games: GameI[] = [];
 const data = fs.readFileSync("./mockdata.json", "utf-8");
 const parsedData: GameI[] = JSON.parse(data);

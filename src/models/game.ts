@@ -1,5 +1,5 @@
-import { PriceI } from "../interface/priceInterface";
-import { GameI } from "../interface/gameInterface";
+import { PriceI } from "../interfaces/priceInterface";
+import { GameI } from "../interfaces/gameInterface";
 import { release } from "os";
 
 export class Game implements GameI {
