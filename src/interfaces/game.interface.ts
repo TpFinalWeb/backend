@@ -1,4 +1,4 @@
-import { PriceI } from "./priceInterface";
+import { PriceI } from "./price.Interface";
 export interface GameI {
     _id: number;
     name: string;
@@ -7,8 +7,7 @@ export interface GameI {
     category: string[];
     price: PriceI[];
     supported_languages: string;
-    popularit_score: number;
+    popularity_score: number;
     header_image: string;
     release_date: string;
-
 }
