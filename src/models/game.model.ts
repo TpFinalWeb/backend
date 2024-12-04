@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { PriceI } from "../interfaces/price.Interface";
-import { GameI } from "../interfaces/game.Interface";
+import { PriceI } from "../interfaces/price.interface";
+import { GameI } from "../interfaces/game.interface";
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const PriceSchema = new mongoose.Schema<PriceI>({

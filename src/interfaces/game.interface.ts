@@ -1,4 +1,4 @@
-import { PriceI } from "./price.Interface";
+import { PriceI } from "./price.interface";
 export interface GameI {
     _id: number;
     name: string;
