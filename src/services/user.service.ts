@@ -39,7 +39,7 @@ export class UserService {
         try{
             const user: IUser | null  = await User.findOne({email: email});
             //if(user && await bcrypt.compare(password, probableUser.password))
-            if(!user){
+            if(!user || user === undefined){
                 return "user not found";
             }
 
