@@ -1,7 +1,7 @@
 import { GameI } from "../interfaces/game.interface";
 import { Game } from "../models/game.model";
 
-export class UserService {
+export class GameService {
     
     public static async getGame(idGame: Number): Promise<GameI> {
         try {
@@ -34,8 +34,8 @@ export class UserService {
             const savedGame = await newGame.save();
             return savedGame;
         } catch (err) {
-            console.error("Error posting new game:", err);
-            throw new Error("Error posting new game");
+            console.error("Error adding new game:", err);
+            throw new Error("Error adding new game");
         }
     }
 
@@ -71,7 +71,7 @@ export class UserService {
             return "game deleted";
         } catch (err) {
             console.error("Error posting new game:", err);
-            throw new Error("Error posting new game");
+            return err as string;
         }
     }
     
