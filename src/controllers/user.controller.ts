@@ -67,10 +67,8 @@ export class UserController {
             (message: string) => {
                 switch (message) {
                     case 'user not found':
-                        res.status(400).json({ message: 'Utilisateur non trouvé' });
-                        break;
                     case 'wrong password':
-                        res.status(400).json({ message: 'Mot de passe incorrect' });
+                        res.status(400).json({ message: 'email ou mot de passe incorrect' });
                         break;
                     case "Internal server error in : loginUser":
                         res.status(500).json({ message: 'Erreur interne du serveur' });
@@ -93,5 +91,11 @@ export class UserController {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         
         return emailRegex.test(email);
+    }
+
+
+
+    public static async Testies(req: Request, res: Response): Promise<void> {
+        res.send('testies are workindawawdadwawdawdg fine');
     }
 }

@@ -39,12 +39,12 @@ export class UserService {
         try{
             const user: IUser | null  = await User.findOne({email: email});
             //if(user && await bcrypt.compare(password, probableUser.password))
-            if(!user){
+            if(!user || user === undefined){
                 return "user not found";
             }
 
             if(await bcrypt.compare(password, user.password)){
-                const accessToken: string = jwt.sign({user}, String(config.jwt_secret), {expiresIn: '1h'});
+                const accessToken: string = jwt.sign({user}, String(config.jwt_secret), {expiresIn: '1d'});
                 return accessToken;
             }
 
