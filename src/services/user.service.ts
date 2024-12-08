@@ -44,7 +44,7 @@ export class UserService {
             }
 
             if(await bcrypt.compare(password, user.password)){
-                const accessToken: string = jwt.sign({user}, String(config.jwt_secret));
+                const accessToken: string = jwt.sign({user}, String(config.jwt_secret), {expiresIn: '1d'});
                 return accessToken;
             }
 
