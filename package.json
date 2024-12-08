@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "set NODE_ENV=test && jest --detectOpenHandles",
+    "test:load": "set NODE_ENV=test && artillery run --env-file .env test-load.yml",
     "start": "ts-node-dev --respawn src/index.ts"
   },
   "keywords": [],
