@@ -3,6 +3,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocs from './utils/swagger.utils';
 import userRoutes from './routes/user.route';
+import helmet from 'helmet';
 
 const app = express();
 
@@ -13,6 +14,7 @@ const corsOptions = {
 
 
 app.use(cors(corsOptions));
+app.use(helmet());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(express.json());
 
