@@ -3,9 +3,9 @@ import { Game } from "../models/game.model";
 
 export class GameService {
     
-    public static async getGame(idGame: Number): Promise<GameI> {
+    public static async getGame(idGame: string): Promise<GameI> {
         try {
-            const game = await Game.findById({idGame});
+            const game = await Game.findById(idGame);
 
             if (!game) {
                 throw new Error('Game not found');
@@ -28,51 +28,56 @@ export class GameService {
         }
     }
 
-    public static async postGame(newGameInfo: GameI): Promise<GameI> {
+    public static async postGame(newGameInfo: GameI): Promise<string> {
         try {
             const newGame = new Game(newGameInfo);
-            const savedGame = await newGame.save();
-            return savedGame;
+            await newGame.save();
+            return "Jeu ajouté";
         } catch (err) {
             console.error("Error adding new game:", err);
-            throw new Error("Error adding new game");
+            return "Error adding new game";
         }
     }
 
-    public static async putGame(newGameInfo: GameI): Promise<GameI> {
+    public static async putGame(newGameInfo: GameI,id: string): Promise<string> {
         try {
-            const editedGame = await Game.findById(newGameInfo._id);
-            
+            const editedGame = await Game.findById(id);
+    
             if (!editedGame) {
-                throw new Error('Game not found');
+                return 'Game not found';
             }
     
             editedGame.name = newGameInfo.name;
             editedGame.detailed_description = newGameInfo.detailed_description;
-            editedGame.developers = newGameInfo.developers;
-            editedGame.category = newGameInfo.category;
-            editedGame.price = newGameInfo.price;
-            editedGame.supported_languages = newGameInfo.supported_languages;
-            editedGame.popularity_score = newGameInfo.popularity_score;
-            editedGame.header_image = newGameInfo.header_image;
-            editedGame.release_date = newGameInfo.release_date;
+            editedGame.num_vote = newGameInfo.num_vote;
+            editedGame.score = newGameInfo.score;
+            editedGame.sample_cover = newGameInfo.sample_cover;
+            editedGame.genres = newGameInfo.genres;
+            editedGame.platforms = newGameInfo.platforms;
+    
             await editedGame.save();
-            
-            return editedGame;
+            return "Jeu modifier";
         } catch (err) {
             console.error("Error updating game:", err);
-            throw new Error("Error updating game");
+            return "Error updating game";
         }
     }
+    
 
-    public static async deleteGame(idGame: Number): Promise<string> {
+    public static async deleteGame(idGame: string): Promise<string> {
         try {
-            await Game.deleteOne({ idGame });
-            return "game deleted";
+            const result = await Game.deleteOne({ _id: idGame });
+    
+            if (result.deletedCount === 0) {
+                return "Game not found or already deleted";
+            }
+    
+            return "Game deleted";
         } catch (err) {
-            console.error("Error posting new game:", err);
-            return err as string;
+            console.error("Error deleting game:", err);
+            return "Error deleting game";
         }
     }
+    
     
 }

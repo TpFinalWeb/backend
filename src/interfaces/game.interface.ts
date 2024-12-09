@@ -1,13 +1,25 @@
-import { PriceI } from "./price.interface";
 export interface GameI {
-    _id: number;
     name: string;
     detailed_description: string;
-    developers: string[];
-    category: string[];
-    price: PriceI[];
-    supported_languages: string;
-    popularity_score: number;
-    header_image: string;
-    release_date: string;
-}
+    num_vote: number;
+    score: number;
+    sample_cover: {
+      height: number;
+      image: string;
+      platforms: string[];
+      thumbnail_image: string;
+      width: number;
+    };
+    genres: {
+      genre_category: string;
+      genre_category_id: number;
+      genre_id: number;
+      genre_name: string;
+    }[];
+    platforms: {
+      first_release_date: string;
+      platform_id: number;
+      platform_name: string;
+    }[];
+  }
+  
