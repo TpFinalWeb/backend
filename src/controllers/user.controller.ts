@@ -68,7 +68,7 @@ export class UserController {
                 switch (message) {
                     case 'user not found':
                     case 'wrong password':
-                        res.status(400).json({ message: 'email ou mot de passe incorrect' });
+                        res.status(401).json({ message: 'email ou mot de passe incorrect' });
                         break;
                     case "Internal server error in : loginUser":
                         res.status(500).json({ message: 'Erreur interne du serveur' });
