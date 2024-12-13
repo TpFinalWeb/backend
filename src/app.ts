@@ -3,6 +3,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocs from './utils/swagger.utils';
 import userRoutes from './routes/user.route';
+import gameRoutes from './routes/game.route';
 import helmet from 'helmet';
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.json());
 
 
 app.use('/', userRoutes);
+app.use('/games', gameRoutes);
 
 
 export default app;
