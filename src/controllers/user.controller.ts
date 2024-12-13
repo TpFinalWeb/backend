@@ -34,7 +34,7 @@ export class UserController {
         })
 
         await UserService.registerUser(user).then(
-            mesage => {
+            (mesage: string) => {
                 switch (mesage) {
                     case 'user already exists':
                         res.status(400).json({ message: 'Utilisateur existe déjà' });
@@ -53,11 +53,49 @@ export class UserController {
 
 
     public static async loginUser(req: Request, res: Response): Promise<void> {
+        const {email, password} = req.body;
+        if(UserController.isContainingNullOrUndefined([email, password])){
+            res.status(400).json({message: 'Veuillez remplir tous les champs'});
+            return;
+        }
+        if(!UserController.isEmailFormatGood(email)){
+            res.status(400).json({message: 'Adresse courriel invalide'});
+            return;
+        }
+
+        await UserService.loginUser(email, password).then(
+            (message: string) => {
+                switch (message) {
+                    case 'user not found':
+                    case 'wrong password':
+                        res.status(401).json({ message: 'email ou mot de passe incorrect' });
+                        break;
+                    case "Internal server error in : loginUser":
+                        res.status(500).json({ message: 'Erreur interne du serveur' });
+                        break;
+                    default:
+                        res.status(200).json({ token: message });
+                        break;
+                }
+            }
+        ); 
     }
 
 
 
     public static isContainingNullOrUndefined(listOfItems: any[]): boolean {
         return listOfItems.includes(null) || listOfItems.includes(undefined) || listOfItems.includes("");
+    }
+
+    public static isEmailFormatGood(email: string): boolean {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
+        return emailRegex.test(email);
+    }
+
+
+
+    public static async Testies(req: Request, res: Response): Promise<void> {
+        res.send('testies are workindawawdadwawdawdg fine');
     }
 }

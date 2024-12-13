@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { UserController } from "../controllers/user.controller";
+import { authentificateToken, authorizeRole} from "../middlewares/user.middleware"
 
 const userRoutes = Router();
 
@@ -64,6 +65,10 @@ const userRoutes = Router();
 userRoutes.post('/register', UserController.registerUser)
 
 
+
 userRoutes.post('/login', UserController.loginUser)
+
+
+userRoutes.post('/testies',authentificateToken, authorizeRole(["user", "beta tester"]), UserController.Testies)
 
 export default userRoutes;
