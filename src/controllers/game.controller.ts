@@ -5,15 +5,25 @@ import { GameService } from "../services/game.service";
 
 export class GameController {
 
-    public static async getGames(req: Request, res: Response): Promise<void> {    
-        const games = await GameService.getAllGames();
-        res.json(games); 
+    public static async getGames(req: Request, res: Response): Promise<void> {  
+        try{
+            const games = await GameService.getAllGames();
+            res.json(games); 
+        }
+        catch{
+            res.status(500).send('Internal server error');; 
+        }
     }
 
     public static async getGame(req: Request, res: Response): Promise<void> {    
-        const id = req.params.id;
-        const game = await GameService.getGame(id);
-        res.json(game);
+        try{
+            const id = req.params.id;
+            const game = await GameService.getGame(id);
+            res.json(game);
+        }
+        catch{
+            res.status(404).send('Game not found');; 
+        }
     }
 
     public static async postGame(req: Request, res: Response): Promise<void> {
