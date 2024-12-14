@@ -1,5 +1,5 @@
-import { PriceI } from "../interface/priceInterface";
-import { GameI } from "../interface/gameInterface";
+import { PriceI } from "../interfaces/price.interface";
+import { GameI } from "../interfaces/game.interface";
 import { release } from "os";
 
 export class Game implements GameI {
@@ -22,7 +22,7 @@ export class Game implements GameI {
         developers: string[],
         supported_languages: string,
         category: string[],
-        popularit_score: number,
+        popularity_score: number,
         header_image: string,
         price: PriceI[],
         release_date: string
@@ -33,7 +33,7 @@ export class Game implements GameI {
         this._developers = developers;
         this._supported_languages = supported_languages;
         this._category = category;
-        this._recommendation = popularit_score;
+        this._recommendation = popularity_score;
         this._header_image = header_image;
         this._price = price;
         this._release_date = release_date;
@@ -87,11 +87,11 @@ export class Game implements GameI {
         this._category = value;
     }
 
-    get popularit_score(): number {
+    get popularity_score(): number {
         return this._recommendation;
     }
 
-    set popularit_score(value: number) {
+    set popularity_score(value: number) {
         this._recommendation = value;
     }
 
@@ -125,7 +125,7 @@ export class Game implements GameI {
             developers: this._developers,
             supported_languages: this._supported_languages,
             category: this._category,
-            popularit_score: this._recommendation,
+            popularity_score: this._recommendation,
             header_image: this._header_image,
             price: this._price,
             release_date: this._release_date
