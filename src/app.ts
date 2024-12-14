@@ -9,7 +9,7 @@ import helmet from 'helmet';
 const app = express();
 
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://localhost:3005', 'https://localhost:4000'],
+    origin: ['http://localhost:3000', 'https://localhost:3005', 'http://localhost:4000'],
 }
 
 

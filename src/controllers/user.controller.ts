@@ -35,16 +35,14 @@ export class UserController {
 
         await UserService.registerUser(user).then(
             (message) => {
-                switch (message) {
-                    case message.alreadyExist:
-                        res.status(400).json({ error: message.alreadyExist});
-                        break;
-                    case message.success:
-                        res.status(201).json({ message: message.success});
-                        break;
-                    default:
-                        res.status(500).json({ error: message.error });
-                        break;
+                if(message.alreadyExist){
+                    res.status(400).json({ error: message.alreadyExist});
+                }
+                else if(message.success){
+                    res.status(201).json({ message: message.success});
+                }
+                else{
+                    res.status(500).json({ error: message.error });
                 }
             }
         )
