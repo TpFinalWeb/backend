@@ -30,22 +30,27 @@ afterAll(async () => {
 describe(`Testing game routes`, function () {
   describe(`GET ${beginningHttpLink}/:id`, function () {
     it(message200, function (done) {
-      const validGameId = '675cb11ce49273bb551cb3dd';
-      request(app)
-        .get(`${beginningHttpLink}/${validGameId}`)
-        .expect(200)
-        .then(response => {
-          expect(response.body).toHaveProperty('name');
-          done();
-        });
-    });
+      // Fetch the last created game from the database
+      Game.find().sort({ _id: -1 }).limit(1)
+        .then(createdGame => {
+            const lastGameId = createdGame[0]._id;
+            request(app)
+              .get(`${beginningHttpLink}/${lastGameId}`)
+              .expect(200)
+              .then(response => {
+                expect(response.body).toHaveProperty('name');
+                done();
+              })
+        })
+    }, 10000);
     it(message404, function (done) {
       const invalidGameId = 'invalid-game-id';
       request(app)
         .get(`${beginningHttpLink}/${invalidGameId}`)
-        .expect(404, done);
+        .expect(404, done)
     });
   });
+  
 
   describe(`POST ${beginningHttpLink}/`, function () {
     it(message201, function (done) {
@@ -139,7 +144,6 @@ describe(`Testing game routes`, function () {
       // Fetch the last created game to get its ID
       Game.find().sort({ _id: -1 }).limit(1).then(createdGame => {
           const testGameId = createdGame[0]._id;
-          console.log(testGameId)
           request(app)
             .put(`${beginningHttpLink}/${testGameId}`)
             .send({
@@ -222,4 +226,24 @@ describe(`Testing game routes`, function () {
         .expect(404, done);
     });
   });
+  
+  describe(`DELETE ${beginningHttpLink}/:id`, function () {
+    it(message200, function (done) {
+      // Fetch the last created game to get its ID
+      Game.find().sort({ _id: -1 }).limit(1)
+        .then(createdGame => {
+            const testGameId = createdGame[0]._id;
+            request(app)
+              .delete(`${beginningHttpLink}/${testGameId}`)
+              .expect(204, done)
+        })
+    });
+    it(message404, function (done) {
+      const invalidGameId = '675cb11ce49273bb551cb3de';
+      request(app)
+        .delete(`${beginningHttpLink}/${invalidGameId}`)
+        .expect(500, done)
+    });
+  });
+  
 });
