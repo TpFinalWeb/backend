@@ -34,17 +34,15 @@ export class UserController {
         })
 
         await UserService.registerUser(user).then(
-            (mesage: string) => {
-                switch (mesage) {
-                    case 'user already exists':
-                        res.status(400).json({ message: 'Utilisateur existe déjà' });
-                        break;
-                    case 'user created':
-                        res.status(201).json({ message: 'Utilisateur enregistré avec succès' });
-                        break;
-                    default:
-                        res.status(500).json({ message: 'Erreur interne du serveur' });
-                        break;
+            (message) => {
+                if(message.alreadyExist){
+                    res.status(400).json({ error: message.alreadyExist});
+                }
+                else if(message.success){
+                    res.status(201).json({ message: message.success});
+                }
+                else{
+                    res.status(500).json({ error: message.error });
                 }
             }
         )
