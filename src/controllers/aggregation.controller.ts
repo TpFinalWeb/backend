@@ -76,4 +76,318 @@ export class AggregationController{
         const result = await AggregationController.executeAggregation(agg);
         res.status(200).json({aggregation: result});
     }
+    public static async getGamesPerPlatforms(req: Request, res: Response){
+      const agg = [
+        {
+          $unwind: "$platforms"
+        },
+        {
+          $group: {
+            _id: "$platforms.platform_name",
+            count: {
+              $sum: 1
+            }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            total: {
+              $sum: "$count"
+            },
+            platforms: {
+              $push: {
+                platform_name: "$_id",
+                count: "$count"
+              }
+            }
+          }
+        },
+        {
+          $unwind: "$platforms"
+        },
+        {
+          $project: {
+            _id: 0,
+            platform_name: "$platforms.platform_name",
+            count: "$platforms.count"
+          }
+        },
+        {
+          $sort: {
+            count: -1
+          }
+        }
+      ];
+
+      const result = await AggregationController.executeAggregation(agg);
+      res.status(200).json({aggregation: result});
+  }
+  public static async getGenrePopularity(req: Request, res: Response){
+    const agg = [
+      {
+        $unwind: "$genres"
+      }
+      ,{ 
+        "$match": {
+          "genres.genre_category": "Basic Genres"
+        }
+      },
+      {
+        $group: {
+          _id: "$genres.genre_name",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$count" },
+          genres: { $push: { genre_name: "$_id", count: "$count" } }
+        }
+      },
+    {
+        $unwind: "$genres"
+      },
+      {
+        $project: {
+          _id: 0,
+          genre_name: "$genres.genre_name",
+          count: "$genres.count"
+        }
+      },    {$sort: {  count: -1 }
+            }];
+
+    const result = await AggregationController.executeAggregation(agg);
+    res.status(200).json({aggregation: result});
+}
+public static async getGenreYearlyPopularity(req: Request, res: Response){
+  const agg = [
+    { 
+      "$unwind": "$platforms" // Unwind the platforms array to process each release date individually
+    },
+    {
+      "$addFields": {
+        "converted_release_date": {
+          "$cond": {
+            "if": {
+              "$regexMatch": {
+                "input": "$platforms.first_release_date",
+                "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+              }
+            },
+            "then": {
+              "$dateFromString": {
+                "dateString": "$platforms.first_release_date"
+              }
+            },
+            "else": null
+          }
+        }
+      }
+    },
+    { 
+      "$match": {
+        "converted_release_date": { "$ne": null } 
+      }
+    },
+    {
+      "$addFields": {
+        "release_year": { "$year": "$converted_release_date" } 
+      }
+    },
+    { "$unwind": "$genres" }, 
+    { 
+      "$match": {
+        "genres.genre_category": "Basic Genres", 
+        "genres.genre_name": req.body.genre_name 
+      }
+    },
+    { 
+      "$group": { 
+        "_id": {
+          "genre_id": "$genres.genre_id", 
+          "release_year": "$release_year" 
+        },
+        "genre_name": { "$first": "$genres.genre_name" },
+        "total_score": {
+          "$sum": {
+            "$cond": { 
+              "if": {
+                "$and": [
+                  { "$ne": [{ "$ifNull": ["$num_vote", 0] }, null] },
+                  { "$ne": ["$num_vote", 0] }
+                ]
+              },
+              "then": "$num_vote",
+              "else": 0
+            }
+          }
+        },
+        "countOfItemWithScoreNotNull": {
+          "$sum": {
+            "$cond": { 
+              "if": {
+                "$and": [
+                  { "$ne": [{ "$ifNull": ["$num_vote", 0] }, null] },
+                  { "$ne": ["$num_vote", 0] }
+                ]
+              },
+              "then": 1,
+              "else": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "$project": {
+        "genre_name": 1,
+        "release_year": "$_id.release_year",
+        "average_score": {
+          "$cond": {
+            "if": { "$gt": ["$countOfItemWithScoreNotNull", 0] },
+            "then": { "$divide": ["$total_score", "$countOfItemWithScoreNotNull"] },
+            "else": 0
+          }
+        },
+        "total_score": 1,
+        "countOfItemWithScoreNotNull": 1
+      }
+    },
+    { 
+      "$sort": { "release_year": 1 } // Sort by release_year in ascending order
+    }
+  ];
+
+  const result = await AggregationController.executeAggregation(agg);
+  res.status(200).json({aggregation: result});
+}
+public static async getNumOfGameOfEachGenre(req: Request, res: Response){
+  const agg =  [
+    {
+      $unwind: "$genres"
+    },{
+      $match: {
+        "genres.genre_category_id": 1
+      }
+    },
+    {
+      $group: {
+        _id: "$genres.genre_name",
+        count: { $sum: 1 }
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        total: { $sum: "$count" },
+        genres: { $push: { genre_name: "$_id", count: "$count" } }
+      }
+    },
+    {
+      $unwind: "$genres"
+    },
+    {
+      $project: {
+        _id: 0,
+        genre_name: "$genres.genre_name",
+        count: "$genres.count",
+      }
+    },    {$sort: {  count: -1 }
+    }];
+
+  const result = await AggregationController.executeAggregation(agg);
+  res.status(200).json({aggregation: result});
+}
+public static async getPlatPopularityBy2Months(req: Request, res: Response){
+  const agg =  [
+    { "$unwind": "$platforms" },  // Unwind the platforms array to process each release date individually
+    {
+      "$addFields": {
+        "converted_release_date": {
+          "$cond": {
+            "if": {
+              "$regexMatch": { "input": "$platforms.first_release_date", "regex": "^\\d{4}-\\d{2}-\\d{2}$" } // Matches complete dates like YYYY-MM-DD
+            },
+            "then": {
+              "$dateFromString": {
+                "dateString": "$platforms.first_release_date"
+              }
+            },
+            "else": null // Set invalid or incomplete dates to null
+          }
+        }
+      }
+    },
+    { 
+      "$match": {
+        "converted_release_date": { "$ne": null }  // Ignore entries with null converted_release_date
+      }
+    },
+    {
+      "$addFields": {
+        "release_month": { "$month": "$converted_release_date" }, // Extract the month
+        "release_year": { "$year": "$converted_release_date" } // Extract the month
+  
+      }
+    },
+    { 
+      "$match": { 
+        "$and": [
+        { "release_year": { "$gte": 2010 } },  // Filter for years 2020 to 2022
+        { "release_month": { "$gte": req.body.startMonth, "$lte": req.body.endMonth } }     // Filter for months October to December
+      ]
+      }
+    },
+    { 
+      "$group": { 
+        "_id": "$platforms.platform_name",  // Group by platform
+        "platform_name": { "$first": "$platforms.platform_name" },
+        "total_votes": {
+          "$sum": {
+            "$cond": { 
+              "if": { "$ne": ["$num_vote", null] },
+              "then": "$num_vote",
+              "else": 0
+            }
+          }
+        },
+        "games_count": {
+          "$sum": {
+            "$cond": { 
+              "if": {
+                "$and": [
+                  { "$ne": [{ "$ifNull": ["$num_vote", 0] }, null] },
+                  { "$ne": ["$num_vote", 0] }
+                ]
+              },
+              "then": 1,
+              "else": 0
+            }
+          }
+        }
+      }
+    }, {
+        $match: {
+          "games_count" :{$gt: 20}
+          }},
+    {
+      "$project": {
+        "platform_name": 1,
+        "average_popularity": {
+          "$cond": {
+            "if": { "$gt": ["$games_count", 0] },
+            "then": { "$divide": ["$total_votes", "$games_count"] },
+            "else": 0
+          }
+        }
+      }
+    },
+    { "$sort": { "average_popularity": -1 } }  // Sort by average popularity descending
+  ];
+
+  const result = await AggregationController.executeAggregation(agg);
+  res.status(200).json({aggregation: result});
+}
 }

@@ -6,5 +6,6 @@ const aggregationRoutes = Router();
 
 aggregationRoutes.get("/getPlatformsWhereGamesReleaseFirst", AggregationController.getPlatformsWhereGamesReleaseFirst);
 
+aggregationRoutes.get("/getGamesPerPlatforms", AggregationController.getGamesPerPlatforms);
 
 export default aggregationRoutes;

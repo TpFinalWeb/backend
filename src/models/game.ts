@@ -1,134 +1,59 @@
-import { PriceI } from "../interfaces/price.interface";
-import { GameI } from "../interfaces/game.interface";
-import { release } from "os";
+import { GameI } from '../interfaces/game.interface';
 
 export class Game implements GameI {
-    
-    public _id: number = 0;              
-    private _name: string = "";
-    private _detailed_description: string = "";
-    private _developers: string[] = [];
-    private _supported_languages: string = "";
-    private _category: string[] = [];       
-    private _recommendation: number = 0;
-    private _header_image: string = "";
-    private _release_date: string = "";
-    public _price: PriceI[] = [{ date: new Date(), price: 0 }];
-    
+    name: string;
+    detailed_description: string;
+    num_vote: number;
+    score: number;
+    sample_cover: {
+        height: number;
+        image: string;
+        platforms: string[];
+        thumbnail_image: string;
+        width: number;
+    };
+    genres: {
+        genre_category: string;
+        genre_category_id: number;
+        genre_id: number;
+        genre_name: string;
+    }[];
+    platforms: {
+        first_release_date: string;
+        platform_id: number;
+        platform_name: string;
+    }[];
+
     constructor(
-        id: number,
         name: string,
         detailed_description: string,
-        developers: string[],
-        supported_languages: string,
-        category: string[],
-        popularity_score: number,
-        header_image: string,
-        price: PriceI[],
-        release_date: string
+        num_vote: number,
+        score: number,
+        sample_cover: {
+            height: number;
+            image: string;
+            platforms: string[];
+            thumbnail_image: string;
+            width: number;
+        },
+        genres: {
+            genre_category: string;
+            genre_category_id: number;
+            genre_id: number;
+            genre_name: string;
+        }[],
+        platforms: {
+            first_release_date: string;
+            platform_id: number;
+            platform_name: string;
+        }[]
     ) {
-        this._id = id;
-        this._name = name;
-        this._detailed_description = detailed_description;
-        this._developers = developers;
-        this._supported_languages = supported_languages;
-        this._category = category;
-        this._recommendation = popularity_score;
-        this._header_image = header_image;
-        this._price = price;
-        this._release_date = release_date;
-    }
-
-    get id(): number {
-        return this._id;
-    }
-
-    set id(value: number) {
-        this._id = value;
-    }
-
-    get name(): string {
-        return this._name;
-    }
-
-    set name(value: string) {
-        this._name = value;
-    }
-
-    get detailed_description(): string {
-        return this._detailed_description;
-    }
-
-    set detailed_description(value: string) {
-        this._detailed_description = value;
-    }
-
-    get developers(): string[] {
-        return this._developers;
-    }
-
-    set developers(value: string[]) {
-        this._developers = value;
-    }
-
-    get supported_languages(): string {
-        return this._supported_languages;
-    }
-
-    set supported_languages(value: string) {
-        this._supported_languages = value;
-    }
-
-    get category(): string[] {
-        return this._category;
-    }
-
-    set category(value: string[] ) {
-        this._category = value;
-    }
-
-    get popularity_score(): number {
-        return this._recommendation;
-    }
-
-    set popularity_score(value: number) {
-        this._recommendation = value;
-    }
-
-    get header_image(): string {
-        return this._header_image;
-    }
-
-    set header_image(value: string) {
-        this._header_image = value;
-    }
-
-    get price(): PriceI[] {
-        return this._price;
-    }
-
-    set price(value: PriceI[]) {
-        this._price = value;
-    }
-    get release_date(): string {
-        return this._release_date;
-    }
-    set release_date(value: string) {
-        this._release_date = value;
-    }
-
-    public toJSON(): GameI {
-        return {
-            _id: this._id,
-            name: this._name,
-            detailed_description: this._detailed_description,
-            developers: this._developers,
-            supported_languages: this._supported_languages,
-            category: this._category,
-            popularity_score: this._recommendation,
-            header_image: this._header_image,
-            price: this._price,
-            release_date: this._release_date
-        };
+        this.name = name;
+        this.detailed_description = detailed_description;
+        this.num_vote = num_vote;
+        this.score = score;
+        this.sample_cover = sample_cover;
+        this.genres = genres;
+        this.platforms = platforms;
     }
 }
