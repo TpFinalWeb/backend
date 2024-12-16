@@ -5,6 +5,7 @@ import swaggerDocs from './utils/swagger.utils';
 import userRoutes from './routes/user.route';
 import gameRoutes from './routes/game.route';
 import helmet from 'helmet';
+import aggregationRoutes from './routes/aggregations.route';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 
 app.use('/', userRoutes);
 app.use('/games', gameRoutes);
+app.use('/aggregations', aggregationRoutes);
 
 
 export default app;
