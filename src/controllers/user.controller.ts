@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from 'bcryptjs';
-
+import { logger } from '../utils/logger';
 // je suis pas certain, est-ce qu<il faut que je fasse une interface pour le user?
 import { User } from "../models/user.model";
 import { IUser } from "../interfaces/user.interface";
@@ -13,6 +13,7 @@ export class UserController {
         // input validation
         if(UserController.isContainingNullOrUndefined(Object.values(req.body))){
             res.status(400).json({message: 'Veuillez remplir tous les champs'});
+            logger.info('POST /register - MissingFields');
             return;
         }
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -21,6 +22,7 @@ export class UserController {
         if (!emailRegex.test(req.body.email)
             || !passwordRegex.test(req.body.password)) {
             res.status(400).json({message: 'Données invalide'});
+            logger.info('POST /register - IncorectFormat');
             return;
         }
 
@@ -38,12 +40,15 @@ export class UserController {
                 switch (mesage) {
                     case 'user already exists':
                         res.status(400).json({ message: 'Utilisateur existe déjà' });
+                        logger.info('POST /register - UserAlreadyExist');
                         break;
                     case 'user created':
                         res.status(201).json({ message: 'Utilisateur enregistré avec succès' });
+                        logger.info('POST /register - UserCreated');
                         break;
                     default:
                         res.status(500).json({ message: 'Erreur interne du serveur' });
+                        logger.info('POST /register - Erreur interne du serveur');
                         break;
                 }
             }
@@ -56,10 +61,12 @@ export class UserController {
         const {email, password} = req.body;
         if(UserController.isContainingNullOrUndefined([email, password])){
             res.status(400).json({message: 'Veuillez remplir tous les champs'});
+            logger.info('POST /login - MissingFields');
             return;
         }
         if(!UserController.isEmailFormatGood(email)){
             res.status(400).json({message: 'Adresse courriel invalide'});
+            logger.info('POST /login - WrongFormatEmail');
             return;
         }
 
@@ -69,12 +76,15 @@ export class UserController {
                     case 'user not found':
                     case 'wrong password':
                         res.status(401).json({ message: 'email ou mot de passe incorrect' });
+                        logger.info('POST /login - WrongEmailOrPassword');
                         break;
                     case "Internal server error in : loginUser":
                         res.status(500).json({ message: 'Erreur interne du serveur' });
+                        logger.info('POST /login - Erreur interne du serveur');
                         break;
                     default:
                         res.status(200).json({ token: message });
+                        logger.info('POST /login - UserConnected');
                         break;
                 }
             }
