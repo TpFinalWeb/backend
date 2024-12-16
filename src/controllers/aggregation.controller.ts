@@ -162,6 +162,8 @@ export class AggregationController{
     res.status(200).json({aggregation: result});
 }
 public static async getGenreYearlyPopularity(req: Request, res: Response){
+  console.log(req.body.genre_name);
+  if (req.body.genre_name !== undefined && req.body.genre_name !== ""){ 
   const agg = [
     { 
       "$unwind": "$platforms" // Unwind the platforms array to process each release date individually
@@ -261,7 +263,10 @@ public static async getGenreYearlyPopularity(req: Request, res: Response){
   ];
 
   const result = await AggregationController.executeAggregation(agg);
-  res.status(200).json({aggregation: result});
+  res.status(200).json({aggregation: result});}
+  else{
+    res.status(400).json({message: "Please provide a genre name"});
+  }
 }
 public static async getNumOfGameOfEachGenre(req: Request, res: Response){
   const agg =  [
@@ -336,7 +341,7 @@ public static async getPlatPopularityBy2Months(req: Request, res: Response){
       "$match": { 
         "$and": [
         { "release_year": { "$gte": 2010 } },  // Filter for years 2020 to 2022
-        { "release_month": { "$gte": req.body.startMonth, "$lte": req.body.endMonth } }     // Filter for months October to December
+        { "release_month": { "$gte": req.body.startMonth|| 0, "$lte": req.body.endMonth || 12} }     // Filter for months October to December
       ]
       }
     },
