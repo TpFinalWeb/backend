@@ -74,7 +74,7 @@ describe(`Testing user routes`, function () {
         request(app)
         .post(`${beginningHttpLink}/login`)
         .send({
-            email: `gestionnaire${numberOfTestUsers - 1}@gmail.com`,
+            email: `gestionnaire${numberOfTestUsers}@gmail.com`,
             password: "G%#*5ghiut82eiuhr3$%#Gt4e6"
         })
         .expect(200, done);

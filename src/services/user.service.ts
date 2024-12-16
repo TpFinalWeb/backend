@@ -17,20 +17,20 @@ const internalErrorMessage: string = "Internal server error in : ";
 
 export class UserService {
 
-    public static async registerUser(user: IUser): Promise<string>{
+    public static async registerUser(user: IUser): Promise<{error?: string, success?: string, alreadyExist?: string}>{
         try{
             // vérifier si l'utilisateur existe déjà
             const userInBd: IUser | null = await User.findOne({email: user.email})
             if(userInBd){
-                return "user already exists";
+                return {alreadyExist: "user already exists"};
             }
 
             const newUser = new User(user);
             await newUser.save();
-            return "user created";
+            return {success: "user created"};
         }catch(err){
             console.log(err);
-            return internalErrorMessage + "registerUser";
+            return {error: internalErrorMessage + "registerUser"};
         }
     }
 
