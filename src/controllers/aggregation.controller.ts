@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Request, Response } from "express";
+import { count } from "console";
 
 export class AggregationController {
   public static async executeAggregation(agg: any): Promise<any> {
@@ -192,6 +193,7 @@ export class AggregationController {
           {
             $unwind: "$platforms", // Unwind the platforms array to process each release date individually
           },
+          
           {
             $addFields: {
               converted_release_date: {
@@ -371,20 +373,25 @@ export class AggregationController {
                       dateString: "$platforms.first_release_date",
                     },
                   },
-                  else: null, // Set invalid or incomplete dates to null
+                  else: null, 
                 },
               },
             },
           },
           {
             $match: {
-              converted_release_date: { $ne: null }, // Ignore entries with null converted_release_date
+              "genres.genre_category_id": 1,
+            },
+          },
+          {
+            $match: {
+              converted_release_date: { $ne: null }, 
             },
           },
           {
             $addFields: {
-              release_month: { $month: "$converted_release_date" }, // Extract the month
-              release_year: { $year: "$converted_release_date" }, // Extract the month
+              release_month: { $month: "$converted_release_date" }, 
+              release_year: { $year: "$converted_release_date" },
             },
           },
           {
@@ -452,5 +459,36 @@ export class AggregationController {
     } catch (err) {
       res.status(500).json({ message: "Internal Err" });
     }
+  }
+  public static async getAllGenres(req: Request, res: Response) {
+  try {
+    const agg = [
+      {
+        $unwind: "$genres",
+      },
+      {
+        $group: {
+          _id: "$genres.genre_name",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          genre_name: "$_id",
+          count: 1,
+          _id: 0,
+        },
+      },
+      {
+        $sort: {
+          count: -1,
+        },
+      },
+    ];
+    const result = await AggregationController.executeAggregation(agg);
+    res.status(200).json({ aggregation: result });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Err" });
+  }
   }
 }
