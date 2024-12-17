@@ -12,7 +12,6 @@ const message400: string = 'should return 400 BAD REQUEST';
 const message401: string = 'should return 401 UNAUTHORIZED';
 
 var numberOfTestUsers: number = 0;
-jest.setTimeout(30000); // Increase timeout to 30 seconds
 
 beforeAll(async () => {
   try {
