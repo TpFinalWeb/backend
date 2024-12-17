@@ -18,9 +18,11 @@ export class GameService {
         }
     }
 
-    public static async getAllGames(): Promise<GameI[]> {
+    public static async getAllGames(containsName: undefined | string): Promise<GameI[]> {
         try {
-            const games = await Game.find();
+            const games = containsName 
+                ? await Game.find({ name: { $regex: `^${containsName}`, $options: 'i' } }) 
+                : await Game.find();
             return games;
         } catch (err) {
             console.log("Error fetching games:");
