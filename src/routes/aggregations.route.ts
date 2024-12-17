@@ -11,5 +11,5 @@ aggregationRoutes.get("/getGenrePopularity", AggregationController.getGenrePopul
 aggregationRoutes.get("/getGenreYearlyPopularity", AggregationController.getGenreYearlyPopularity);
 aggregationRoutes.get("/getNumOfGameOfEachGenre", AggregationController.getNumOfGameOfEachGenre);
 aggregationRoutes.get("/getPlatPopularityBy2Months", AggregationController.getPlatPopularityBy2Months);
-
+aggregationRoutes.get("/getAllGenres", AggregationController.getAllGenres);
 export default aggregationRoutes;
