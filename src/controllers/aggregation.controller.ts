@@ -460,7 +460,7 @@ export class AggregationController {
           $match: {
             $and: [
               { release_year: { $gte: 2010 } }, 
-              { release_month: { $gte: 0, $lte: 12 } }, 
+              { release_month: { $gte: startMonth, $lte: endMonth } }, 
             ],
           },
         },
