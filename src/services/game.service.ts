@@ -13,7 +13,7 @@ export class GameService {
 
             return game;
         } catch (err) {
-            console.error("Error fetching games:", err);
+            console.log("Error fetching games:");
             throw new Error("Error fetching games");
         }
     }
@@ -23,7 +23,7 @@ export class GameService {
             const games = await Game.find();
             return games;
         } catch (err) {
-            console.error("Error fetching games:", err);
+            console.log("Error fetching games:");
             throw new Error("Error fetching games");
         }
     }
@@ -34,7 +34,7 @@ export class GameService {
             await newGame.save();
             return "Jeu ajouté";
         } catch (err) {
-            console.error("Error adding new game:", err);
+            console.log("Error adding new game:", err);
             return "Error adding new game";
         }
     }
@@ -58,7 +58,7 @@ export class GameService {
             await editedGame.save();
             return "Jeu modifier";
         } catch (err) {
-            console.error("Error updating game:", err);
+            console.log("Error updating game");
             return "Error updating game";
         }
     }
@@ -74,7 +74,7 @@ export class GameService {
     
             return "Game deleted";
         } catch (err) {
-            console.error("Error deleting game:", err);
+            console.log("Error deleting game:");
             return "Error deleting game";
         }
     }
