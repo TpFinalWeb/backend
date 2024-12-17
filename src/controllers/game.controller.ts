@@ -12,8 +12,8 @@ export class GameController {
             logger.info('GET /games - getAllGames');
         }
         catch{
-            res.status(500).send('Internal server error');; 
-            logger.info('GET /games - Internal server error');
+            res.status(500).send('Internal server error');
+            logger.error('GET /games - Internal server error');
         }
     }
 
@@ -124,7 +124,7 @@ export class GameController {
                         break;
                     default:
                         res.status(500).json({ message: 'Erreur interne du serveur' });
-                        logger.info('POST /games/ - Internal server error');
+                        logger.error('POST /games/ - Internal server error');
                         break;
                 }
             }
@@ -230,7 +230,7 @@ export class GameController {
                         break;
                     default:
                         res.status(500).json({ message: 'Erreur interne du serveur' });
-                        logger.info('PUT /games/:id:id - Erreur interne du serveur');
+                        logger.error('PUT /games/:id:id - Erreur interne du serveur');
                         break;
                 }
             }
@@ -252,7 +252,7 @@ export class GameController {
                     break;
                 default:
                     res.status(500).json({ message: 'Erreur interne du serveur' });
-                    logger.info('DELETE /games/:id - Erreur interne du serveur');
+                    logger.error('DELETE /games/:id - Erreur interne du serveur');
                     break;
             }
         })

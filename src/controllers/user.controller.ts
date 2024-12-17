@@ -47,7 +47,7 @@ export class UserController {
                 }
                 else{
                     res.status(500).json({ error: message.error });
-                    logger.info('POST /register - Erreur interne du serveur');
+                    logger.error('POST /register - Erreur interne du serveur');
                 }
             }
         )
@@ -78,7 +78,7 @@ export class UserController {
                         break;
                     case "Internal server error in : loginUser":
                         res.status(500).json({ message: 'Erreur interne du serveur' });
-                        logger.info('POST /login - Erreur interne du serveur');
+                        logger.error('POST /login - Erreur interne du serveur');
                         break;
                     default:
                         res.status(200).json({ token: message });
