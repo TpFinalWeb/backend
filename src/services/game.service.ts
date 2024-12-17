@@ -6,11 +6,9 @@ export class GameService {
     public static async getGame(idGame: string): Promise<GameI> {
         try {
             const game = await Game.findById(idGame);
-
             if (!game) {
                 throw new Error('Game not found');
             }
-
             return game;
         } catch (err) {
             console.error("Error fetching games:", err);
@@ -42,11 +40,9 @@ export class GameService {
     public static async putGame(newGameInfo: GameI,id: string): Promise<string> {
         try {
             const editedGame = await Game.findById(id);
-    
             if (!editedGame) {
                 return 'Game not found';
             }
-    
             editedGame.name = newGameInfo.name;
             editedGame.detailed_description = newGameInfo.detailed_description;
             editedGame.num_vote = newGameInfo.num_vote;
@@ -54,7 +50,6 @@ export class GameService {
             editedGame.sample_cover = newGameInfo.sample_cover;
             editedGame.genres = newGameInfo.genres;
             editedGame.platforms = newGameInfo.platforms;
-    
             await editedGame.save();
             return "Jeu modifier";
         } catch (err) {
@@ -67,11 +62,9 @@ export class GameService {
     public static async deleteGame(idGame: string): Promise<string> {
         try {
             const result = await Game.deleteOne({ _id: idGame });
-    
             if (result.deletedCount === 0) {
                 return "Game not found or already deleted";
             }
-    
             return "Game deleted";
         } catch (err) {
             console.error("Error deleting game:", err);

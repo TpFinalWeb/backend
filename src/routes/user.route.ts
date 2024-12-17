@@ -64,10 +64,7 @@ const userRoutes = Router();
  */
 userRoutes.post('/register', UserController.registerUser)
 
-
-
 userRoutes.post('/login', UserController.loginUser)
-
 
 userRoutes.post('/testies',authentificateToken, authorizeRole(["user", "beta tester"]), UserController.Testies)
 
