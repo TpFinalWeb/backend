@@ -3,9 +3,9 @@ import { AggregationController } from '../controllers/aggregation.controller';
 import connectToDb from '../utils/mongodb.utils';
 import { Request, Response } from 'express';
 import { Game } from '../models/game.model';
-
+import { config } from '../config/config';
 export async function chornotime(): Promise<void> {
-    if (process.env.NODE_ENV !== 'test') {
+    if (config.nodeEnv !== 'test') {
 
     cron.schedule('40 3 */2 * *', async () => {
     try{
