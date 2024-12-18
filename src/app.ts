@@ -9,8 +9,8 @@ import aggregationRoutes from './routes/aggregations.route';
 import generatedata from './services/gameInsertionTobd';
 import { chornotime } from './utils/chronodatacheck';
 import { config } from './config/config';
-const app = express();
 
+const app = express();
 const corsOptions = {
     origin: ['http://localhost:3000', 'https://localhost:3005', 'http://localhost:4000'],
 }
