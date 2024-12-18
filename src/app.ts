@@ -6,6 +6,7 @@ import userRoutes from './routes/user.route';
 import gameRoutes from './routes/game.route';
 import helmet from 'helmet';
 import aggregationRoutes from './routes/aggregations.route';
+import generatedata from './services/gameInsertionTobd';
 
 const app = express();
 
@@ -14,7 +15,7 @@ const corsOptions = {
 }
 
 
-
+generatedata();
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
