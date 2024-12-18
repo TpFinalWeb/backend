@@ -9,8 +9,8 @@ import path from 'path';
 const port = config.port!;
 
 const options = {
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
+  key: fs.readFileSync('./etc/secrets/key.pem'),
+  cert: fs.readFileSync('./etc/secrets/cert.pem')
 };
 
 https.createServer(options, app).listen(port, () => {
