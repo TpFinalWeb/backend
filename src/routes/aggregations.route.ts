@@ -1,25 +1,29 @@
 import { Router } from "express";
 import { AggregationController } from "../controllers/aggregation.controller";
+import { authentificateToken, authorizeRole } from "../middlewares/user.middleware";
 
 const aggregationRoutes = Router();
-aggregationRoutes.get("/getPlatformsPopularity", AggregationController.getPlatformPopularity);
-aggregationRoutes.get("/getPlatformsWhereGamesReleaseFirst", AggregationController.getPlatformsWhereGamesReleaseFirst);
-aggregationRoutes.get("/getGamesPerPlatforms", AggregationController.getGamesPerPlatforms);
+const user = "user";
+const admin = "admin";
 
-aggregationRoutes.get("/getGenrePopularity", AggregationController.getGenrePopularity);
-aggregationRoutes.get("/getGenreYearlyPopularity", AggregationController.getGenreYearlyPopularity);
-aggregationRoutes.get("/getNumOfGameOfEachGenre", AggregationController.getNumOfGameOfEachGenre);
+aggregationRoutes.get("/getPlatformsPopularity", authentificateToken, authorizeRole([user, admin]), AggregationController.getPlatformPopularity);
+aggregationRoutes.get("/getPlatformsWhereGamesReleaseFirst", authentificateToken, authorizeRole([user, admin]), AggregationController.getPlatformsWhereGamesReleaseFirst);
+aggregationRoutes.get("/getGamesPerPlatforms", authentificateToken, authorizeRole([user, admin]), AggregationController.getGamesPerPlatforms);
+
+aggregationRoutes.get("/getGenrePopularity", authentificateToken, authorizeRole([user, admin]), AggregationController.getGenrePopularity);
+aggregationRoutes.get("/getGenreYearlyPopularity", authentificateToken, authorizeRole([user, admin]), AggregationController.getGenreYearlyPopularity);
+aggregationRoutes.get("/getNumOfGameOfEachGenre", authentificateToken, authorizeRole([user, admin]), AggregationController.getNumOfGameOfEachGenre);
 
 
-aggregationRoutes.get("/getPlatPopularityBy2Months", AggregationController.getPlatPopularityBy2Months);
-aggregationRoutes.get("/getTop10GamesOfPlatform", AggregationController.getTop10GamesOfPlatform);
-aggregationRoutes.get("/getTop10GamesOfGenre", AggregationController.getTop10GamesOfGenre);
+aggregationRoutes.get("/getPlatPopularityBy2Months", authentificateToken, authorizeRole([user, admin]), AggregationController.getPlatPopularityBy2Months);
+aggregationRoutes.get("/getTop10GamesOfPlatform", authentificateToken, authorizeRole([user, admin]), AggregationController.getTop10GamesOfPlatform);
+aggregationRoutes.get("/getTop10GamesOfGenre", authentificateToken, authorizeRole([user, admin]), AggregationController.getTop10GamesOfGenre);
 
-aggregationRoutes.get("/getPlatformQualityByTime", AggregationController.getPlatformQualityByTime);
-aggregationRoutes.get("/getGenreQualityByTime", AggregationController.getGenreQualityByTime);
-aggregationRoutes.get("/getGOTY", AggregationController.getGOTY);
+aggregationRoutes.get("/getPlatformQualityByTime", authentificateToken, authorizeRole([user, admin]), AggregationController.getPlatformQualityByTime);
+aggregationRoutes.get("/getGenreQualityByTime", authentificateToken, authorizeRole([user, admin]), AggregationController.getGenreQualityByTime);
+aggregationRoutes.get("/getGOTY", authentificateToken, authorizeRole([user, admin]), AggregationController.getGOTY);
 
-aggregationRoutes.get("/getAllGenres", AggregationController.getAllGenres);
-aggregationRoutes.get("/getAllPlatforms", AggregationController.getAllPlatforms);
+aggregationRoutes.get("/getAllGenres", authentificateToken, authorizeRole([user, admin]), AggregationController.getAllGenres);
+aggregationRoutes.get("/getAllPlatforms", authentificateToken, authorizeRole([user, admin]), AggregationController.getAllPlatforms);
 
 export default aggregationRoutes;
