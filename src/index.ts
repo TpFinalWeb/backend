@@ -6,8 +6,9 @@ import app from './app';
 import fs from 'fs';
 import path from 'path';
 
-// Use the PORT environment variable or fall back to a default (e.g., 3005) for local testing
-const port = process.env.PORT || config.port || 3005;  // Ensure to use process.env.PORT
+// Use the PORT environment variable or fallback to config.port or 3005 for local testing
+const port = Number(process.env.PORT) || Number(config.port) || 3005;  // Convert to number
+
 console.log("hey");
 console.log(`Using port: ${port}`);
 
