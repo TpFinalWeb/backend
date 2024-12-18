@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 
 const port = config.port!;
-const serverHttp = config.serverHttp;
+const serverHttp = config.serverHttp!;
 
 if(serveurHttp){
   http.createServer(app).listen(port, () => {
