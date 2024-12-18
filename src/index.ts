@@ -1,23 +1,18 @@
 import express from 'express';
 import { config } from './config/config';
-import http from 'http';
 import https from 'https';
 import connectToDb from './utils/mongodb.utils';
 import app from './app';
 import fs from 'fs';
-import path from 'path';
 
 const port = config.port!;
-const serverHttp = config.serverHttp!;
 
-if(serverHttp){
-  http.createServer(app).listen(port, () => {
-    connectToDb();
-    console.log(`Serveur en écoute sur <http://localhost>:${port}`);
-  })
-}else{
-  https.createServer(app).listen(port, () => {
-    connectToDb();
-    console.log(`Serveur en écoute sur <http://localhost>:${port}`);
-  })
-}
+const options = {
+  key: fs.readFileSync('/etc/secrets/key.pem'),
+  cert: fs.readFileSync('/etc/secrets/cert.pem')
+};
+
+https.createServer(options, app).listen(port, () => {
+  connectToDb();
+  console.log(`Serveur en écoute sur <https://localhost>:${port}`);
+})
