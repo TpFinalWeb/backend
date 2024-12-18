@@ -7,6 +7,7 @@ import fs from 'fs';
 import path from 'path';
 
 const port = config.port!;
+const serverHttp = config.serverHttp;
 
 http.createServer(app).listen(port, () => {
   connectToDb();
