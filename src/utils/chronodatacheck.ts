@@ -5,6 +5,8 @@ import { Request, Response } from 'express';
 import { Game } from '../models/game.model';
 
 export async function chornotime(): Promise<void> {
+    if (process.env.NODE_ENV !== 'test') {
+
     cron.schedule('40 3 */2 * *', async () => {
     try{
     await connectToDb().then(async () => {
@@ -69,4 +71,5 @@ export async function chornotime(): Promise<void> {
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
     }});
-  }
+}
+}
