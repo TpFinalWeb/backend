@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import aggregationRoutes from './routes/aggregations.route';
 import generatedata from './services/gameInsertionTobd';
 import { chornotime } from './utils/chronodatacheck';
+import { config } from './config/config';
 
 const app = express();
 
