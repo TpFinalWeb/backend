@@ -10,7 +10,7 @@ import path from 'path';
 const port = config.port!;
 const serverHttp = config.serverHttp!;
 
-if(serveurHttp){
+if(serverHttp){
   http.createServer(app).listen(port, () => {
     connectToDb();
     console.log(`Serveur en écoute sur <http://localhost>:${port}`);
