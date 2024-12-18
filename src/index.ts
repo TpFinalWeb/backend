@@ -11,7 +11,7 @@ console.log("hey")
 console.log(port)
 
 const options = {
-  key: fs.readFileSync('key.pem'),
+  key: fs.readFileSync('/etc/secrets/key.pem'),
   cert: fs.readFileSync('cert.pem')
 };
 
