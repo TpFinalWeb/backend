@@ -14,8 +14,10 @@ const app = express();
 const corsOptions = {
     origin: ['http://localhost:3000', 'https://localhost:3005', 'http://localhost:4000'],
 }
-
-chornotime();
+if (config.nodeEnv == 'development' || config.nodeEnv == 'production') {
+    console.log("Starting scheduled task");
+    chornotime();
+}
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
