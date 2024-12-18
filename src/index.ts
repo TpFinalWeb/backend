@@ -1,6 +1,6 @@
 import express from 'express';
 import { config } from './config/config';
-import https from 'https';
+import http from 'http';
 import connectToDb from './utils/mongodb.utils';
 import app from './app';
 import fs from 'fs';
