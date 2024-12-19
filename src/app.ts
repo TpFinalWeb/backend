@@ -10,7 +10,7 @@ import aggregationRoutes from './routes/aggregations.route';
 const app = express();
 
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://localhost:3005', 'http://localhost:4000'],
+    origin: ['http://localhost:3000', 'https://localhost:3005', 'https://fetest-3u7d.onrender.com'],
 }
 
 
