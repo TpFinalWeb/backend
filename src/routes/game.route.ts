@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { GameController } from "../controllers/game.controller";
+import { authentificateToken, authorizeRole } from "../middlewares/user.middleware";
 
 const gameRoutes = Router();
+const user = "user";
+const admin = "admin";
 
 /**
  * @swagger
@@ -282,10 +285,10 @@ const gameRoutes = Router();
  *                 format: date
  */
 
-gameRoutes.get('/', GameController.getGames);
-gameRoutes.get('/:id', GameController.getGame);
-gameRoutes.post('/', GameController.postGame);
-gameRoutes.put('/:id', GameController.putGame);
-gameRoutes.delete('/:id', GameController.deleteGame);
+gameRoutes.get('/', authentificateToken, authorizeRole([admin]), GameController.getGames);
+gameRoutes.get('/:id', authentificateToken, authorizeRole([admin]), GameController.getGame);
+gameRoutes.post('/', authentificateToken, authorizeRole([admin]), GameController.postGame);
+gameRoutes.put('/:id', authentificateToken, authorizeRole([admin]), GameController.putGame);
+gameRoutes.delete('/:id', authentificateToken, authorizeRole([admin]), GameController.deleteGame);
 
 export default gameRoutes;
