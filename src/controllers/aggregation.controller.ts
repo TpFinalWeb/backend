@@ -288,7 +288,6 @@ export class AggregationController {
           { $unwind: "$genres" },
           {
             $match: {
-              "genres.genre_category": "Basic Genres",
               "genres.genre_name": genre_name,
               num_vote: { $ne: null, $gt: 0 }
             },
