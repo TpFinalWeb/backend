@@ -15,7 +15,6 @@ const corsOptions = {
 }
 
 
-generatedata();
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
