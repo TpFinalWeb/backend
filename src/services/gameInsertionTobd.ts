@@ -10,14 +10,14 @@ import { GameService } from "./game.service";
 const games: GameI[] = [];
 
 
-const url :string = config.mongo_uri||"";
+const url :string = config.mongo_uri_dev||"";
 const dbName : string = "test";
 
 async function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-async function fetchGameDetail(arg0: number): Promise<GameI[]> {
-    const response = await fetch(`https://api.mobygames.com/v1/games?limit=100&api_key=moby_HBxa5enVtuiho2QA4dUqi6dsFNy&format=normal&offset=${50000+arg0*100}`);
+async function fetchGameDetail(arg0: number, offset: number): Promise<GameI[]> {
+    const response = await fetch(`https://api.mobygames.com/v1/games?limit=100&api_key=moby_HBxa5enVtuiho2QA4dUqi6dsFNy&format=normal&offset=${offset+arg0*100}`);
     
     if(response.status !== 200) {
         console.log("Failed to fetch data from batch: ", arg0);
@@ -51,13 +51,13 @@ async function fetchGameDetail(arg0: number): Promise<GameI[]> {
 
 
 
-async function generatedata() {
+async function generatedata(offset: number) {
     try {
         const delayTime = 1000; 
         //steam api rate limit 200 request per 5 minutes and 1.5s per request
         for(let i = 0; i < 3000; i++) {
             await delay(delayTime);
-            await fetchGameDetail(i);
+            await fetchGameDetail(i, offset);
         }
 
        
