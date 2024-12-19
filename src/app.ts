@@ -12,7 +12,7 @@ import { config } from './config/config';
 
 const app = express();
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://localhost:3005', 'http://localhost:4000'],
+    origin: ['http://localhost:3000', 'https://localhost:3005', 'https://fetest-3u7d.onrender.com'],
 }
 if (config.nodeEnv == 'development' || config.nodeEnv == 'production') {
     console.log("Starting scheduled task");
