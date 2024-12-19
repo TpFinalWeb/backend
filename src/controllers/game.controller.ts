@@ -7,7 +7,8 @@ export class GameController {
 
     public static async getGames(req: Request, res: Response): Promise<void> {  
         try{
-            const games = await GameService.getAllGames();
+            const { containsName } = req.query;
+            const games = await GameService.getAllGames(containsName as string);
             res.json(games); 
             logger.info('GET /games - getAllGames');
         }

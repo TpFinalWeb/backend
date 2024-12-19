@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 import { config } from "../config/config";
 
 
-
-
+// Connect to MongoDB
 const connectToDb = async () => {
     try {
-        await mongoose.connect(config.mongo_uri!).then(() => {
+        const dbUri = config.nodeEnv?.trim() === 'test' ? config.mongo_uri_test : config.mongo_uri_dev;
+        await mongoose.connect(dbUri!).then(() => {
             console.log('Connected to MongoDB');
         });
         const db = mongoose.connection;

@@ -67,16 +67,9 @@ describe(`Testing game routes`, function () {
             image: "https://example.com/images/zelda_cover.jpg",
             thumbnail_image: "https://example.com/images/zelda_thumb.jpg",
             platforms: [
-              {
-                platform_id: 1,
-                platform_name: "Nintendo Switch",
-                first_release_date: "2017-03-03"
-              },
-              {
-                platform_id: 2,
-                platform_name: "Wii U",
-                first_release_date: "2017-03-03"
-              }
+              "Nintendo Switch",
+              "Wii U",
+              "Windows",
             ]
           },
           genres: [
@@ -157,11 +150,7 @@ describe(`Testing game routes`, function () {
                   image: "https://example.com/images/zelda_cover.jpg",
                   thumbnail_image: "https://example.com/images/zelda_thumb.jpg",
                   platforms: [
-                      {
-                          platform_id: 1,
-                          platform_name: "Nintendo Switch",
-                          first_release_date: "2017-03-03"
-                      }
+                      "Nintendo Switch"
                   ]
               },
               genres: [
