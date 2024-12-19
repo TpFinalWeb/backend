@@ -31,35 +31,19 @@ const GameSchema = new Schema<GameDocument>({
   sample_cover: {
     height: {
       type: Number,
-      required: true,
     },
     width: {
       type: Number,
-      required: true,
     },
     image: {
       type: String,
-      required: true,
     },
     thumbnail_image: {
       type: String,
-      required: true,
     },
     platforms: [
       {
-        _id: false,
-        platform_id: {
-          type: Number,
-          required: true,
-        },
-        platform_name: {
-          type: String,
-          required: true,
-        },
-        first_release_date: {
-          type: String,
-          required: true,
-        },
+        type: String,
       },
     ],
   },

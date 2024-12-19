@@ -17,7 +17,7 @@ async function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 async function fetchGameDetail(arg0: number): Promise<GameI[]> {
-    const response = await fetch(`https://api.mobygames.com/v1/games?limit=100&api_key=moby_HBxa5enVtuiho2QA4dUqi6dsFNy&format=normal&offset=${105298+arg0*100}`);
+    const response = await fetch(`https://api.mobygames.com/v1/games?limit=100&api_key=moby_HBxa5enVtuiho2QA4dUqi6dsFNy&format=normal&offset=${50000+arg0*100}`);
     
     if(response.status !== 200) {
         console.log("Failed to fetch data from batch: ", arg0);
