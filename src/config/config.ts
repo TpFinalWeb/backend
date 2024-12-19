@@ -7,5 +7,6 @@ export const config = {
     nodeEnv: process.env.NODE_ENV,
     jwt_secret: process.env.JWT_SECRET,
     mongo_uri_dev: process.env.MONGO_URI_DEV,
-    mongo_uri_test: process.env.MONGO_URI_TEST
+    mongo_uri_test: process.env.MONGO_URI_TEST,
+    offset: process.env.OFFSET
 };

@@ -51,18 +51,22 @@ async function fetchGameDetail(arg0: number, offset: number): Promise<GameI[]> {
 
 
 
-async function generatedata(offset: number) {
+async function generatedata(offset: number) : Promise<number> {
     try {
         const delayTime = 1000; 
+        let offsetres : number = 0;
         //steam api rate limit 200 request per 5 minutes and 1.5s per request
         for(let i = 0; i < 3000; i++) {
             await delay(delayTime);
             await fetchGameDetail(i, offset);
+            offsetres = offset+i*100;
         }
+        return offsetres;
 
        
     } catch (error) {
         console.error("Failed to fetch app list", error);
+        return 0;
     }
 }
 

@@ -4,12 +4,17 @@ import connectToDb from '../utils/mongodb.utils';
 import { Request, Response } from 'express';
 import { Game } from '../models/game.model';
 import { config } from '../config/config';
+import generatedata from '../services/gameInsertionTobd';
+
+
 export async function chornotime(): Promise<void> {
     cron.schedule('40 3 */2 * *', async () => {
     try{
-    await connectToDb().then(async () => {
-      console.log('Connected to MongoDB');
-      console.log('Running scheduled task: getPlatformPopularity');
+        await connectToDb().then(async () => {
+            console.log('Connected to MongoDB');
+            console.log('Running scheduled task: getPlatformPopularity');
+            let resnumb: number = await generatedata(Number(config.offset?.trim()) || 150000);
+            console.log("Number of games added: ", resnumb);
         try {
             const mockResponse: Response = {
                 statusCode: 0, 
