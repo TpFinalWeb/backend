@@ -3,6 +3,7 @@ import request from 'supertest';
 import app from '../app';
 import { Game } from '../models/game.model';
 import connectToDb, { closeMongoConnectionTest } from '../utils/mongodb.utils';
+import { UserService } from '../services/user.service';
 
 const beginningHttpLink: string = '/games'; 
 const message200: string = 'should return 200 OK';
@@ -11,9 +12,15 @@ const message400: string = 'should return 400 BAD REQUEST';
 const message404: string = 'should return 404 NOT FOUND';
 const message500: string = 'should return 500 INTERNAL SERVER ERROR';
 
+var tokenAdmin: string;
+var tokenUser: string;
+
 beforeAll(async () => {
   try {
     await connectToDb();
+    tokenAdmin = await UserService.loginUser("admin@mail.com", "#Admin123")
+    tokenUser = await UserService.loginUser("test@gmail.com", "#Test123")
+    console.log(tokenAdmin)
   } catch (error) {
     console.log(error);
   }
@@ -36,6 +43,7 @@ describe(`Testing game routes`, function () {
             const lastGameId = createdGame[0]._id;
             request(app)
               .get(`${beginningHttpLink}/${lastGameId}`)
+              .set('Authorization', `bearer ${tokenAdmin}`)
               .expect(200)
               .then(response => {
                 expect(response.body).toHaveProperty('name');
@@ -47,6 +55,7 @@ describe(`Testing game routes`, function () {
       const invalidGameId = 'invalid-game-id';
       request(app)
         .get(`${beginningHttpLink}/${invalidGameId}`)
+        .set('Authorization', `bearer ${tokenAdmin}`)
         .expect(404, done)
     });
   });
@@ -56,6 +65,7 @@ describe(`Testing game routes`, function () {
     it(message201, function (done) {
       request(app)
         .post(`${beginningHttpLink}`)
+        .set('Authorization', `bearer ${tokenAdmin}`)
         .send({
           name: "The Legend of Zelda: Breath of the wild",
           detailed_description: "An open-world action-adventure game developed by Nintendo.",
@@ -105,6 +115,7 @@ describe(`Testing game routes`, function () {
     it(message400, function (done) {
       request(app)
         .post(`${beginningHttpLink}`)
+        .set('Authorization', `bearer ${tokenAdmin}`)
         .send({
           detailed_description: 'This is a test game description.',
           num_vote: 0,
@@ -139,6 +150,7 @@ describe(`Testing game routes`, function () {
           const testGameId = createdGame[0]._id;
           request(app)
             .put(`${beginningHttpLink}/${testGameId}`)
+            .set('Authorization', `bearer ${tokenAdmin}`)
             .send({
               name: "The Legend of Zelda: Breath of the wildest",
               detailed_description: "An open-world action-adventure game developed by Nintendo.",
@@ -178,6 +190,7 @@ describe(`Testing game routes`, function () {
       const nonExistentId = '675616f2187a7ab1b0aabcde';
       request(app)
         .put(`${beginningHttpLink}/${nonExistentId}`)
+        .set('Authorization', `bearer ${tokenAdmin}`)
         .send({
           name: "The Legend of Zelda: Breath of the wildest",
           detailed_description: "An open-world action-adventure game developed by Nintendo.",
@@ -224,6 +237,7 @@ describe(`Testing game routes`, function () {
             const testGameId = createdGame[0]._id;
             request(app)
               .delete(`${beginningHttpLink}/${testGameId}`)
+              .set('Authorization', `bearer ${tokenAdmin}`)
               .expect(204, done)
         })
     });
@@ -231,6 +245,7 @@ describe(`Testing game routes`, function () {
       const invalidGameId = '675cb11ce49273bb551cb3de';
       request(app)
         .delete(`${beginningHttpLink}/${invalidGameId}`)
+        .set('Authorization', `bearer ${tokenAdmin}`)
         .expect(500, done)
     });
   });

@@ -12,7 +12,7 @@ import { config } from './config/config';
 
 const app = express();
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://localhost:3005', 'https://fe-mfpk.onrender.com'],
+    origin: ['http://localhost:4000', 'https://localhost:3005', 'https://fe-mfpk.onrender.com'],
 }
 if (config.nodeEnv == 'development' || config.nodeEnv == 'production') {
     console.log("Starting scheduled task");
