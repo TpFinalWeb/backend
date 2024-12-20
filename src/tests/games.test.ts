@@ -5,7 +5,7 @@ import { Game } from '../models/game.model';
 import connectToDb, { closeMongoConnectionTest } from '../utils/mongodb.utils';
 import { UserService } from '../services/user.service';
 
-const beginningHttpLink: string = '/games'; 
+const beginningHttpLink: string = '/games';
 const message200: string = 'should return 200 OK';
 const message201: string = 'should return 201 CREATED';
 const message400: string = 'should return 400 BAD REQUEST';
@@ -40,15 +40,15 @@ describe(`Testing game routes`, function () {
       // Fetch the last created game from the database
       Game.find().sort({ _id: -1 }).limit(1)
         .then(createdGame => {
-            const lastGameId = createdGame[0]._id;
-            request(app)
-              .get(`${beginningHttpLink}/${lastGameId}`)
-              .set('Authorization', `bearer ${tokenAdmin}`)
-              .expect(200)
-              .then(response => {
-                expect(response.body).toHaveProperty('name');
-                done();
-              })
+          const lastGameId = createdGame[0]._id;
+          request(app)
+            .get(`${beginningHttpLink}/${lastGameId}`)
+            .set('Authorization', `bearer ${tokenAdmin}`)
+            .expect(200)
+            .then(response => {
+              expect(response.body).toHaveProperty('name');
+              done();
+            })
         })
     }, 10000);
     it(message404, function (done) {
@@ -59,7 +59,7 @@ describe(`Testing game routes`, function () {
         .expect(404, done)
     });
   });
-  
+
 
   describe(`POST ${beginningHttpLink}/`, function () {
     it(message201, function (done) {
@@ -147,42 +147,42 @@ describe(`Testing game routes`, function () {
     it(message200, function (done) {
       // Fetch the last created game to get its ID
       Game.find().sort({ _id: -1 }).limit(1).then(createdGame => {
-          const testGameId = createdGame[0]._id;
-          request(app)
-            .put(`${beginningHttpLink}/${testGameId}`)
-            .set('Authorization', `bearer ${tokenAdmin}`)
-            .send({
-              name: "The Legend of Zelda: Breath of the wildest",
-              detailed_description: "An open-world action-adventure game developed by Nintendo.",
-              num_vote: 1500,
-              score: 9.5,
-              sample_cover: {
-                  height: 1024,
-                  width: 768,
-                  image: "https://example.com/images/zelda_cover.jpg",
-                  thumbnail_image: "https://example.com/images/zelda_thumb.jpg",
-                  platforms: [
-                      "Nintendo Switch"
-                  ]
-              },
-              genres: [
-                  {
-                      genre_category: "Adventure",
-                      genre_category_id: 10,
-                      genre_id: 100,
-                      genre_name: "Action-Adventure"
-                  }
-              ],
+        const testGameId = createdGame[0]._id;
+        request(app)
+          .put(`${beginningHttpLink}/${testGameId}`)
+          .set('Authorization', `bearer ${tokenAdmin}`)
+          .send({
+            name: "The Legend of Zelda: Breath of the wildest",
+            detailed_description: "An open-world action-adventure game developed by Nintendo.",
+            num_vote: 1500,
+            score: 9.5,
+            sample_cover: {
+              height: 1024,
+              width: 768,
+              image: "https://example.com/images/zelda_cover.jpg",
+              thumbnail_image: "https://example.com/images/zelda_thumb.jpg",
               platforms: [
-                  {
-                      platform_id: 1,
-                      platform_name: "Nintendo Switch",
-                      first_release_date: "2017-03-03"
-                  }
+                "Nintendo Switch"
               ]
+            },
+            genres: [
+              {
+                genre_category: "Adventure",
+                genre_category_id: 10,
+                genre_id: 100,
+                genre_name: "Action-Adventure"
+              }
+            ],
+            platforms: [
+              {
+                platform_id: 1,
+                platform_name: "Nintendo Switch",
+                first_release_date: "2017-03-03"
+              }
+            ]
           })
-            .expect(200, done);
-        }
+          .expect(200, done);
+      }
       )
     });
 
@@ -197,48 +197,48 @@ describe(`Testing game routes`, function () {
           num_vote: 1500,
           score: 9.5,
           sample_cover: {
-              height: 1024,
-              width: 768,
-              image: "https://example.com/images/zelda_cover.jpg",
-              thumbnail_image: "https://example.com/images/zelda_thumb.jpg",
-              platforms: [
-                  {
-                      platform_id: 1,
-                      platform_name: "Nintendo Switch",
-                      first_release_date: "2017-03-03"
-                  }
-              ]
+            height: 1024,
+            width: 768,
+            image: "https://example.com/images/zelda_cover.jpg",
+            thumbnail_image: "https://example.com/images/zelda_thumb.jpg",
+            platforms: [
+              {
+                platform_id: 1,
+                platform_name: "Nintendo Switch",
+                first_release_date: "2017-03-03"
+              }
+            ]
           },
           genres: [
-              {
-                  genre_category: "Adventure",
-                  genre_category_id: 10,
-                  genre_id: 100,
-                  genre_name: "Action-Adventure"
-              }
+            {
+              genre_category: "Adventure",
+              genre_category_id: 10,
+              genre_id: 100,
+              genre_name: "Action-Adventure"
+            }
           ],
           platforms: [
-              {
-                  platform_id: 1,
-                  platform_name: "Nintendo Switch",
-                  first_release_date: "2017-03-03"
-              }
+            {
+              platform_id: 1,
+              platform_name: "Nintendo Switch",
+              first_release_date: "2017-03-03"
+            }
           ]
-      })
+        })
         .expect(404, done);
     });
   });
-  
+
   describe(`DELETE ${beginningHttpLink}/:id`, function () {
     it(message200, function (done) {
       // Fetch the last created game to get its ID
       Game.find().sort({ _id: -1 }).limit(1)
         .then(createdGame => {
-            const testGameId = createdGame[0]._id;
-            request(app)
-              .delete(`${beginningHttpLink}/${testGameId}`)
-              .set('Authorization', `bearer ${tokenAdmin}`)
-              .expect(204, done)
+          const testGameId = createdGame[0]._id;
+          request(app)
+            .delete(`${beginningHttpLink}/${testGameId}`)
+            .set('Authorization', `bearer ${tokenAdmin}`)
+            .expect(204, done)
         })
     });
     it(message404, function (done) {
@@ -249,5 +249,5 @@ describe(`Testing game routes`, function () {
         .expect(500, done)
     });
   });
-  
+
 });
