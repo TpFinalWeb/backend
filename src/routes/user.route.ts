@@ -64,8 +64,59 @@ const userRoutes = Router();
  */
 userRoutes.post('/register', UserController.registerUser)
 
-userRoutes.post('/login', UserController.loginUser)
 
-userRoutes.post('/testies',authentificateToken, authorizeRole(["user", "beta tester"]), UserController.Testies)
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Logs in a user
+ *     description: Authenticates a user and returns a token
+ *     tags: [users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: testJohnny@gmail.com
+ *               password:
+ *                 type: string
+ *                 example: ILoveYouGilFromSusan&Mary
+ *     responses:
+ *       200:
+ *         description: User authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *       400:
+ *         description: Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid email or password
+ *       500:
+ *         description: Internal Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal Error
+ */
+userRoutes.post('/login', UserController.loginUser)
 
 export default userRoutes;

@@ -15,6 +15,19 @@ const admin = "admin";
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *       description: Enter your access token here
+ * security:
+ *   - bearerAuth: []
+ */
+
+/**
+ * @swagger
  * /games:
  *   get:
  *     summary: Get all games

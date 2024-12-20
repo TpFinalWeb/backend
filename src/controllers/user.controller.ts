@@ -100,10 +100,4 @@ export class UserController {
         
         return emailRegex.test(email);
     }
-
-
-
-    public static async Testies(req: Request, res: Response): Promise<void> {
-        res.send('testies are workindawawdadwawdawdg fine');
-    }
 }
