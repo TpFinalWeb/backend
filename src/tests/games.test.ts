@@ -7,9 +7,12 @@ import { UserService } from '../services/user.service';
 
 const beginningHttpLink: string = '/games';
 const message200: string = 'should return 200 OK';
+const message204: string = 'should return 204 NO CONTENT';
 const message201: string = 'should return 201 CREATED';
 const message400: string = 'should return 400 BAD REQUEST';
 const message404: string = 'should return 404 NOT FOUND';
+const message401: string = 'should return 401 UNAUTHORIZED';
+const message403: string = 'should return 403 FORBIDDEN';
 const message500: string = 'should return 500 INTERNAL SERVER ERROR';
 
 var tokenAdmin: string;
@@ -58,6 +61,31 @@ describe(`Testing game routes`, function () {
         .set('Authorization', `bearer ${tokenAdmin}`)
         .expect(404, done)
     });
+
+    // with an unauthorized user
+    it(message401, function (done) {
+      // Fetch the last created game from the database
+      Game.find().sort({ _id: -1 }).limit(1)
+        .then(createdGame => {
+          const lastGameId = createdGame[0]._id;
+          request(app)
+            .get(`${beginningHttpLink}/${lastGameId}`)
+            .set('Authorization', `bearer ${tokenUser}`)
+            .expect(401, done)
+        })
+    }, 10000);
+
+    // with an unauthenticated user
+    it(message401, function (done) {
+      // Fetch the last created game from the database
+      Game.find().sort({ _id: -1 }).limit(1)
+        .then(createdGame => {
+          const lastGameId = createdGame[0]._id;
+          request(app)
+            .get(`${beginningHttpLink}/${lastGameId}`)
+            .expect(401, done)
+        })
+    }, 10000);
   });
 
 
@@ -140,6 +168,23 @@ describe(`Testing game routes`, function () {
           }]
         })
         .expect(400, done);
+    });
+
+    // with an unauthorized user
+    it(message401, function (done) {
+      request(app)
+        .post(`${beginningHttpLink}`)
+        .set('Authorization', `bearer ${tokenUser}`)
+        .send({}) // pas besoin d<envoyer vu que ca va pas faire la requete
+        .expect(401, done);
+    });
+
+    // with an unauthenticated user
+    it(message401, function (done) {
+      request(app)
+        .post(`${beginningHttpLink}`)
+        .send({}) // pas besoin d<envoyer vu que ca va pas faire la requete
+        .expect(401, done);
     });
   });
 
@@ -227,10 +272,37 @@ describe(`Testing game routes`, function () {
         })
         .expect(404, done);
     });
+
+    // with an unauthorized user
+    it(message401, function (done) {
+      // Fetch the last created game to get its ID
+      Game.find().sort({ _id: -1 }).limit(1).then(createdGame => {
+        const testGameId = createdGame[0]._id;
+        request(app)
+          .put(`${beginningHttpLink}/${testGameId}`)
+          .set('Authorization', `bearer ${tokenUser}`)
+          .send({})
+          .expect(401, done);
+      }
+      )
+    });
+
+    // with an unauthenticated user
+    it(message401, function (done) {
+      // Fetch the last created game to get its ID
+      Game.find().sort({ _id: -1 }).limit(1).then(createdGame => {
+        const testGameId = createdGame[0]._id;
+        request(app)
+          .put(`${beginningHttpLink}/${testGameId}`)
+          .send({})
+          .expect(401, done);
+      }
+      )
+    });
   });
 
   describe(`DELETE ${beginningHttpLink}/:id`, function () {
-    it(message200, function (done) {
+    it(message204, function (done) {
       // Fetch the last created game to get its ID
       Game.find().sort({ _id: -1 }).limit(1)
         .then(createdGame => {
@@ -241,12 +313,36 @@ describe(`Testing game routes`, function () {
             .expect(204, done)
         })
     });
+
     it(message404, function (done) {
       const invalidGameId = '675cb11ce49273bb551cb3de';
       request(app)
         .delete(`${beginningHttpLink}/${invalidGameId}`)
         .set('Authorization', `bearer ${tokenAdmin}`)
         .expect(500, done)
+    });
+
+    it(message401, function (done) {
+      // Fetch the last created game to get its ID
+      Game.find().sort({ _id: -1 }).limit(1)
+        .then(createdGame => {
+          const testGameId = createdGame[0]._id;
+          request(app)
+            .delete(`${beginningHttpLink}/${testGameId}`)
+            .set('Authorization', `bearer ${tokenUser}`)
+            .expect(401, done)
+        })
+    });
+
+    it(message401, function (done) {
+      // Fetch the last created game to get its ID
+      Game.find().sort({ _id: -1 }).limit(1)
+        .then(createdGame => {
+          const testGameId = createdGame[0]._id;
+          request(app)
+            .delete(`${beginningHttpLink}/${testGameId}`)
+            .expect(401, done)
+        })
     });
   });
 
